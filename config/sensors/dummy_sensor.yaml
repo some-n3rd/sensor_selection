@@ -8,3 +8,5 @@ model_configs:
   orientation:
   color:
   scale: 0.01
+  model_orientation: [0, 0, 0]
+  model_position: [0, 0, 0]

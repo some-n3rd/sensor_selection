@@ -1,6 +1,7 @@
 from direct.showbase.ShowBase import ShowBase
 from panda3d.bullet import BulletWorld
 from panda3d.core import Vec3
+from panda3d.bullet import BulletWorld
 
 from sim.agent.camera_controls import CameraControls
 from sim.agent.drone_controls import DroneControls
@@ -20,6 +21,10 @@ class WORLD(ShowBase):
 
         super().__init__()
 
+        self.bullet_world = BulletWorld()
+        self.bullet_world.setGravity(Vec3(0, 0, -9.81))
+        self.dt = 0.01
+
         yaml_config = extract_yaml_configurations(config_file)
 
         self.agent_list = list()
@@ -37,9 +42,6 @@ class WORLD(ShowBase):
             T_sky=thermal_config.get("sky_temp", yaml_config.get("sky_temp", 260.0)),
         )
 
-        # Load physics simulation with pybullet
-        self.world = BulletWorld()
-        self.world.setGravity(Vec3(0, 0, -9.81))
 
         # DO NOT CHANGE LOADER ORDER, THEY DEPEND ON EACH OTHER
         # environment -> objects -> agents
@@ -71,3 +73,9 @@ class WORLD(ShowBase):
         self.accept("c", self.camera_controls.camera_list_forward)
         self.accept("x", self.camera_controls.camera_list_back)
         self.accept("z", self.camera_controls.save_current_camera_image)
+
+        self.taskMgr.add(self.simulation_manager.update_physics, "update_physics")
+        
+        self.simulation_manager.enable_debug_collision_geometry()
+        self.simulation_manager.load_debug_physics_object()
+        self.simulation_manager.load_debug_plane()

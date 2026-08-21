@@ -4,7 +4,7 @@ The simulation window and rendering are created by Panda3D, a game engine writte
 
 ## `SimulationManager`
 
-There is a single instance of SimulationManager in the entire codebase. The way you call this object depends on the context. It should probably be a global, but those always spell bad ideas.
+There is a single instance of SimulationManager in the entire codebase. The way you call this object depends on the context.
 
 ```python
 # Sometimes it appears like this
@@ -18,6 +18,18 @@ sim_man = self.world.simulation_manager
 sim_man.builder.build()
 
 ```
+
+### Physics
+
+The simulation manager holds the task for updating the physics engine through PyBullet, `update_physics()`. To make the simulation move faster or slower, change `world.tf` in `world.py`
+
+The simulation holds a couple of functions for debugging the simulation. The source code is from the panda3d tutorial of debugging.
+
+- `enable_debug_collision_geometry()`
+- `load_debug_plane()`
+- `load_debug_physics_object()`
+
+Feel free to modify the attributes inside of the functions for testing the physics.
 
 ## Rendering an Object
 
@@ -106,6 +118,10 @@ All renderable objects will have the same configurations shown below.
 - `model`
 - `animations`
 - `textures`
+- `model_positon`
+- `model_orientation`
+- `geometry_shape`
+- `geometry_args`
 
 Note that textures and animations features are not available yet.
 
@@ -120,6 +136,10 @@ model_configs:
   scale: 1
   textures: {}
   animations: []
+  model_orientation: [0, 0, 0]
+  model_position: [0, 0, 0]
+  geometry_shape: "box"
+  geometry_args: [5, 5, 5]
 ```
 
 Here is an example that creates a blue quadcopter.
@@ -134,6 +154,16 @@ model_configs:
 ```
 
 If the value for a key is missing, or the attribute line is missing entirely, the attribute will revert to default settings. Parent objects will override or modify the behaviors of their children.
+
+`model_position` and `model_orientation` serve as adjustment for moving the model to fit inside the object's collision box. The coordinates are relative to the collision box.
+
+## Physics
+
+This simulation uses PyBullet for it's physics engine. Under the hood, the object node is actually a `DynamicBodyNode` from `panda3d.bullet` so that the entire object will be applied with physics.
+
+All renderable objects will have collision. To make them dynamic, set them to a non zero mass. To make an object static, give them zero mass, which is a shorthand for infinite mass.
+
+You can set the physics body with the builder by using `.with_collision_shape()`, which will create a primitive for the object. If you wish to use a more complex shape, use `.set_collision_shape()`
 
 ## Using An Object's Model
 

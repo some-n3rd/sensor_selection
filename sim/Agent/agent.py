@@ -56,7 +56,7 @@ class Agent(ThermalBody, RenderableObject):
             raise ValueError(
                 f"Value {value} cannot be converted to float as type {type(value)} and cannot be accepted."
             )
-            
+
         self._if = value
 
     @property

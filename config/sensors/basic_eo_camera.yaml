@@ -33,4 +33,6 @@ model_configs:
   orientation: [0, 0, 0]
   color: [0, 0, 100]
   scale: 0.5
+  model_orientation: [0, 0, 0]
+  model_position: [0, 0, 0]
 

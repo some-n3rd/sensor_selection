@@ -28,3 +28,5 @@ model_configs:
   orientation: [0, 45, 90] # In Yaw, pitch, roll in degrees
   color:
   scale: 0.1
+  model_orientation: [0, 0, 0]
+  model_position: [0, 0, -100]

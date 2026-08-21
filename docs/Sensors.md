@@ -53,6 +53,8 @@ model_configs:
   orientation: [90, 45, 90]
   color: [0, 0, 100]
   scale: 1
+  model_orientation: [0, 0, 0]
+  model_position: [0, 0, -50]
 ```
 
 As this is an object that is being rendered, it inherits the attributes for a renderable object. Read the [rendering page](/docs/Rendering.md) on how to do model_configurations.

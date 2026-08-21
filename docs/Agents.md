@@ -82,6 +82,8 @@ model_configs:
   orientation:
   color: [0, 0, 255]
   scale: 0.1
+  model_orientation: [0, 0, 0]
+  model_position: [0, 0, -50]  
 ```
 
 Attributes left blank are left to their defaults. They are displayed here in this page.
@@ -110,6 +112,8 @@ model_configs:
   orientation:
   color: [0, 0, 255]
   scale: 0.1
+  model_orientation: [0, 0, 0]
+  model_position: [0, 0, -50]
 ```
 
 Remember that you can always redefine attributes in higher, more general configuration files that reapply.
@@ -138,8 +142,8 @@ external_agent = builder.build().attach_to_world()
 
 # Using all options
 
-crazy_agent = builder.id().name().team() \
-    .render_agent(True) \
+crazy_agent = builder.set_id().set_name().set_team() \
+    .prerender_agent(True) \
     .with_configurations("config\\number\\one", priority=10) \
     .with_configurations("config\\number\\two") \
     .with_sensor_list("sensor\\configurations") \

@@ -62,7 +62,7 @@ class AgentBuilder(BuilderTemplate):
         self._thermal_manager = None
         self._thermal_body_args = [None, None]
 
-    def chainable(self, method):
+    def chainable(method):
         """
         Decorator to enable a function to be chained on others when calling the builder.
         """
@@ -80,7 +80,6 @@ class AgentBuilder(BuilderTemplate):
         return self._id
 
     @id.setter
-    @chainable
     def id(self, value):
         """Setter for an AgentBuilder's agent id"""
         try:
@@ -95,7 +94,6 @@ class AgentBuilder(BuilderTemplate):
         return self._name
 
     @name.setter
-    @chainable
     def name(self, value) -> None:
         """Getter for an AgentBuilder's name"""
         self._name = str(value)
@@ -104,9 +102,8 @@ class AgentBuilder(BuilderTemplate):
     def render_agents(self):
         """Getter for whether the builder will automatically render the agent."""
         return self._rendering_agent
-
+    
     @render_agents.getter
-    @chainable
     def render_agents(self, value):
         """
         Switch for rendering the agents in the builder.
@@ -118,6 +115,23 @@ class AgentBuilder(BuilderTemplate):
             raise ValueError(
                 "Value could not be converted into a boolean. Switch must be a bool or similar."
             )
+
+    # Chainable Setters 
+    
+    @chainable
+    def set_name(self, name:str):
+        """Chainable setter for setting the name of the agent built"""
+        self.name = name
+    
+    @chainable
+    def set_id(self, id:int):
+        """Chainable setter for setting the id of the agent built"""
+        self.id = id
+        
+    @chainable
+    def prerender_agent(self, boolean: bool):
+        """Switch for whether the agent will prerender"""
+        self.render_agents = boolean
 
     @chainable
     def with_configurations(self, configuration: dict, priority: int = 0):
@@ -185,7 +199,9 @@ class AgentBuilder(BuilderTemplate):
         append additional sensors to the agent. This will have the lowest priority
         """
         self._sensor_configs = config_dict
-        if not isinstance(configuration, dict):
+        if config_dict is None:
+            return
+        if not isinstance(config_dict, dict):
             raise ValueError("Set configurations must be a dictionary")
 
     @chainable
@@ -272,7 +288,12 @@ class AgentBuilder(BuilderTemplate):
     def _render_agent(self, agent):
         """Calls the renderable builder"""
         builder = self.world.simulation_manager.renderable_builder
-        builder.with_object(agent).config_from_object(agent).build()
+        from panda3d.bullet import BulletBoxShape
+        from panda3d.core import Vec3
+
+        builder.with_object(agent).config_from_object(agent).set_collision_shape(
+            BulletBoxShape(Vec3(10, 10, 10))
+        ).set_mass(1.0).build()
 
     @chainable
     def build(self):

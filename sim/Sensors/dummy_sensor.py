@@ -1,6 +1,46 @@
 """A dummy sensor for testing and creating a sensor"""
 
-from sim.Sensors.sensor import Sensor, SensorType
+from sim.sensors.sensor import Sensor, SensorType
+from sim.utils.builder import BuilderTemplate
+
+
+class DummySensorBuilder(BuilderTemplate):
+    """Basic builder to construct a DummySensor"""
+
+    def __init__(self):
+        self._dummy_sensor = DummySensor()
+        self._id = 1
+        self._name = "dummy"
+
+    @property
+    def id(self):
+        return self._id
+
+    @chainable
+    @id.setter
+    def id(self, value):
+        self._id = value
+
+    @property
+    def name(self):
+        return self._name
+
+    @chainable
+    @name.setter
+    def name(self, value):
+        self._name = value
+
+    def _reset(self):
+        self._dummy_sensor = DummySensor()
+        self._id = 1
+        self._name = "dummy"
+
+    # Render this thing :)
+
+    def build(self):
+        product = self._dummy_sensor
+        self._reset()
+        return product
 
 
 class DummySensor(Sensor):
@@ -13,8 +53,5 @@ class DummySensor(Sensor):
 
     def __init__(self):
         super().__init__()
-
-        self.model = None
-        self.sensor_id = None
         self.type = SensorType.DUMMY
         self.name = "dummy"
