@@ -16,7 +16,6 @@ class DummySensorBuilder(BuilderTemplate):
     def id(self):
         return self._id
 
-    @chainable
     @id.setter
     def id(self, value):
         self._id = value
@@ -25,7 +24,6 @@ class DummySensorBuilder(BuilderTemplate):
     def name(self):
         return self._name
 
-    @chainable
     @name.setter
     def name(self, value):
         self._name = value
@@ -35,7 +33,7 @@ class DummySensorBuilder(BuilderTemplate):
         self._id = 1
         self._name = "dummy"
 
-    # Render this thing :)
+    # TODO: Render this thing :)
 
     def build(self):
         product = self._dummy_sensor

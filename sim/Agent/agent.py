@@ -57,7 +57,7 @@ class Agent(ThermalBody, RenderableObject):
                 f"Value {value} cannot be converted to float as type {type(value)} and cannot be accepted."
             )
 
-        self._if = value
+        self._tf = value
 
     @property
     def team(self):

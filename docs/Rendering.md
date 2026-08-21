@@ -155,7 +155,7 @@ model_configs:
 
 If the value for a key is missing, or the attribute line is missing entirely, the attribute will revert to default settings. Parent objects will override or modify the behaviors of their children.
 
-`model_position` and `model_orientation` serve as adjustment for moving the model to fit inside the object's collision box. The coordinates are relative to the collision box.
+`model_position` and `model_orientation` serve as adjustment for moving the model to fit inside the object's collision box. The coordinates are relative to the collision box. You can access the collision geometry through `geometry_body`. The attributes `geometry_shape` and `geometry_args` are for the creation of the geometry_body.
 
 ## Physics
 
@@ -164,6 +164,8 @@ This simulation uses PyBullet for it's physics engine. Under the hood, the objec
 All renderable objects will have collision. To make them dynamic, set them to a non zero mass. To make an object static, give them zero mass, which is a shorthand for infinite mass.
 
 You can set the physics body with the builder by using `.with_collision_shape()`, which will create a primitive for the object. If you wish to use a more complex shape, use `.set_collision_shape()`
+
+You can always set the mass after creation, but you can only set the collision physics with the `RenderableObjectBuilder`. Use the option `.with_object()` to change something after creation with the builder.
 
 ## Using An Object's Model
 

@@ -288,12 +288,7 @@ class AgentBuilder(BuilderTemplate):
     def _render_agent(self, agent):
         """Calls the renderable builder"""
         builder = self.world.simulation_manager.renderable_builder
-        from panda3d.bullet import BulletBoxShape
-        from panda3d.core import Vec3
-
-        builder.with_object(agent).config_from_object(agent).set_collision_shape(
-            BulletBoxShape(Vec3(10, 10, 10))
-        ).set_mass(1.0).build()
+        builder.with_object(agent).config_from_object(agent).build()
 
     @chainable
     def build(self):
